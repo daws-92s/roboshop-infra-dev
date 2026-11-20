@@ -172,6 +172,15 @@ resource "aws_vpc_security_group_ingress_rule" "cart_payment" {
   to_port     = 8080
 }
 
+resource "aws_vpc_security_group_ingress_rule" "cart_shipping" {
+  security_group_id = local.cart_sg_id # destination, where you are creating the rule
+
+  referenced_security_group_id   = local.shipping_sg_id # source, where is traffic coming from
+  from_port   = 8080
+  ip_protocol = "tcp"
+  to_port     = 8080
+}
+
 resource "aws_vpc_security_group_ingress_rule" "cart_bastion" {
   security_group_id = local.cart_sg_id # destination, where you are creating the rule
 
@@ -295,4 +304,14 @@ resource "aws_vpc_security_group_ingress_rule" "frontend_alb_public_https" {
   from_port   = 443
   ip_protocol = "tcp"
   to_port     = 443
+}
+
+# Bastion
+resource "aws_vpc_security_group_ingress_rule" "bastion_mylap" {
+  security_group_id = local.bastion_sg_id # destination, where you are creating the rule
+
+  cidr_ipv4   = "${chomp(data.http.my_ipv4.response_body)}/32"  # source, where is traffic coming from
+  from_port   = 22
+  ip_protocol = "tcp"
+  to_port     = 22
 }
