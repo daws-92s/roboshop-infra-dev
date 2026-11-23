@@ -33,8 +33,8 @@ resource "aws_iam_policy" "mysql" {
   # Terraform expression result to valid JSON syntax.
   policy = templatefile("${path.module}/mysql-policy.json.tftpl"){
     account_id    = local.account_id
-    project = ${var.project}
-    environment = ${var.environment}
+    project = var.project
+    environment = var.environment
   }
 
   tags = merge(
