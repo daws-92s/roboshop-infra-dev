@@ -162,7 +162,6 @@ resource "aws_autoscaling_policy" "catalogue" {
 
     target_value = 75.0
   }
-  cooldown               = 120
 }
 
 resource "aws_lb_listener_rule" "catalogue" {
